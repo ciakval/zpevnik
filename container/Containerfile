@@ -1,0 +1,26 @@
+FROM ubuntu
+
+# Prevent any interactive prompts during package installation
+ENV DEBIAN_FRONTEND=noninteractive
+ENV TZ=Europe/Prague
+
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends \
+        tzdata \
+        ca-certificates \
+    && ln -snf /usr/share/zoneinfo/$TZ /etc/localtime \
+    && echo $TZ > /etc/timezone \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
+
+# Run actual installation
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends \
+        make \
+        python3 \
+        texlive-latex-base \
+        texlive-latex-extra \
+        texlive-lang-czechslovak \
+        texlive-music \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
